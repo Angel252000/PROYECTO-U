@@ -50,10 +50,22 @@ db.serialize(() => {
 
     // Insertar Subprocesos (Guía Inteligente)
     const stmtSub = db.prepare("INSERT INTO subprocesos (pauta_id, descripcion, orden) VALUES (?, ?, ?)");
+    const subprocesosComunes = [
+        "Revisión de actas y reglamentos internos",
+        "Encuesta de satisfacción a estudiantes/egresados",
+        "Análisis de indicadores de rendimiento académico",
+        "Verificación de infraestructura física y tecnológica",
+        "Entrevistas con empleadores y socios estratégicos",
+        "Auditoría de expedientes docentes",
+        "Evaluación del impacto del currículo en el mercado"
+    ];
+
     for (let i = 1; i <= 59; i++) {
-        stmtSub.run(i, "Identificar normativa aplicable", 1);
-        stmtSub.run(i, "Recopilar evidencias descriptivas", 2);
-        stmtSub.run(i, "Validar con partes interesadas", 3);
+        // Asignar 3 subprocesos aleatorios de la lista común
+        const shuffle = subprocesosComunes.sort(() => 0.5 - Math.random());
+        stmtSub.run(i, shuffle[0], 1);
+        stmtSub.run(i, shuffle[1], 2);
+        stmtSub.run(i, shuffle[2], 3);
     }
     stmtSub.finalize();
 

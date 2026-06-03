@@ -64,3 +64,15 @@ CREATE TABLE IF NOT EXISTS auditorias (
     fecha_auditoria DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (pauta_id) REFERENCES pautas(id)
 );
+
+-- Plan de Mejora
+CREATE TABLE IF NOT EXISTS plan_mejora (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    pauta_id INTEGER,
+    actividad TEXT NOT NULL,
+    responsable TEXT,
+    plazo DATE,
+    recursos TEXT,
+    prioridad TEXT CHECK(prioridad IN ('Alta', 'Media', 'Baja')),
+    FOREIGN KEY (pauta_id) REFERENCES pautas(id)
+);

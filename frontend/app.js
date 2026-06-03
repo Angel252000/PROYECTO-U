@@ -12,6 +12,7 @@ function showSection(section) {
     if (section === 'pautas') loadPautas();
     if (section === 'gap') loadGapAnalysis();
     if (section === 'audit') loadAudit();
+    if (section === 'mejora') loadPlanMejora();
 }
 
 // Load Dashboard Data
@@ -176,6 +177,60 @@ async function loadGapAnalysis() {
         tbody.appendChild(tr);
     });
 }
+
+async function loadPlanMejora() {
+    const [resMejora, resPautas] = await Promise.all([
+        fetch(`${API_URL}/plan-mejora`),
+        fetch(`${API_URL}/pautas`)
+    ]);
+
+    const mejoras = await resMejora.json();
+    const pautas = await resPautas.json();
+
+    // Fill Select
+    const select = document.getElementById('mejora-pauta');
+    select.innerHTML = '<option value="">Seleccione Pauta...</option>';
+    pautas.forEach(p => {
+        select.innerHTML += `<option value="${p.id}">${p.codigo} - ${p.nombre}</option>`;
+    });
+
+    // Fill Table
+    const tbody = document.getElementById('mejora-table-body');
+    tbody.innerHTML = '';
+    mejoras.forEach(m => {
+        const tr = document.createElement('tr');
+        tr.className = "border-b";
+        tr.innerHTML = `
+            <td class="py-3">${m.codigo}</td>
+            <td class="py-3">${m.actividad}</td>
+            <td class="py-3">${m.responsable || 'N/A'}</td>
+            <td class="py-3">${m.plazo || 'N/A'}</td>
+            <td class="py-3 font-bold ${m.prioridad === 'Alta' ? 'text-red-600' : 'text-yellow-600'}">${m.prioridad}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+document.getElementById('mejora-form').onsubmit = async (e) => {
+    e.preventDefault();
+    const pauta_id = document.getElementById('mejora-pauta').value;
+    const actividad = document.getElementById('mejora-actividad').value;
+    const responsable = document.getElementById('mejora-responsable').value;
+    const plazo = document.getElementById('mejora-plazo').value;
+    const recursos = document.getElementById('mejora-recursos').value;
+    const prioridad = document.getElementById('mejora-prioridad').value;
+
+    const res = await fetch(`${API_URL}/plan-mejora`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pauta_id, actividad, responsable, plazo, recursos, prioridad })
+    });
+
+    if (res.ok) {
+        document.getElementById('mejora-form').reset();
+        loadPlanMejora();
+    }
+};
 
 async function loadAudit() {
     const res = await fetch(`${API_URL}/audit`);

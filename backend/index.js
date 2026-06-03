@@ -198,6 +198,39 @@ app.get('/api/export', async (req, res) => {
     }
 });
 
+// Plan de Mejora
+app.get('/api/plan-mejora', async (req, res) => {
+    try {
+        const rows = await query(`
+            SELECT pm.*, p.codigo, p.nombre as pauta_nombre
+            FROM plan_mejora pm
+            JOIN pautas p ON pm.pauta_id = p.id
+        `);
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.post('/api/plan-mejora', async (req, res) => {
+    const { pauta_id, actividad, responsable, plazo, recursos, prioridad } = req.body;
+    try {
+        await new Promise((resolve, reject) => {
+            db.run(
+                "INSERT INTO plan_mejora (pauta_id, actividad, responsable, plazo, recursos, prioridad) VALUES (?, ?, ?, ?, ?, ?)",
+                [pauta_id, actividad, responsable, plazo, recursos, prioridad],
+                (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                }
+            );
+        });
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // Gap Analysis Engine
 app.get('/api/gap-analysis', async (req, res) => {
     try {

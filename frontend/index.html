@@ -24,6 +24,7 @@
                     <li class="mb-4"><a href="#" onclick="showSection('pautas')" class="hover:text-blue-400">Pautas SINAES</a></li>
                     <li class="mb-4"><a href="#" onclick="showSection('gap')" class="hover:text-blue-400">Gap Analysis</a></li>
                     <li class="mb-4"><a href="#" onclick="showSection('audit')" class="hover:text-blue-400">Bot Auditor</a></li>
+                    <li class="mb-4"><a href="#" onclick="showSection('mejora')" class="hover:text-blue-400">Plan de Mejora</a></li>
                     <li class="mb-4"><a href="http://localhost:3000/api/export" class="hover:text-blue-400" target="_blank">Exportar Excel</a></li>
                 </ul>
             </nav>
@@ -105,6 +106,43 @@
                 <h2 class="text-3xl font-bold mb-6">Reporte del Bot Auditor</h2>
                 <div id="audit-report" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Report will be rendered here -->
+                </div>
+            </section>
+
+            <!-- Plan de Mejora Section -->
+            <section id="mejora-section" class="hidden">
+                <h2 class="text-3xl font-bold mb-6">Plan de Mejora Académica</h2>
+                <div class="bg-white p-6 rounded-lg shadow mb-8">
+                    <h4 class="font-bold mb-4 text-blue-800">Crear Actividad de Mejora</h4>
+                    <form id="mejora-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <select id="mejora-pauta" class="border p-2 rounded w-full" required>
+                            <option value="">Seleccione Pauta...</option>
+                        </select>
+                        <input type="text" id="mejora-actividad" placeholder="Actividad" class="border p-2 rounded" required>
+                        <input type="text" id="mejora-responsable" placeholder="Responsable" class="border p-2 rounded">
+                        <input type="date" id="mejora-plazo" class="border p-2 rounded">
+                        <textarea id="mejora-recursos" placeholder="Recursos necesarios" class="border p-2 rounded md:col-span-2"></textarea>
+                        <select id="mejora-prioridad" class="border p-2 rounded">
+                            <option value="Alta">Prioridad Alta</option>
+                            <option value="Media">Prioridad Media</option>
+                            <option value="Baja">Prioridad Baja</option>
+                        </select>
+                        <button type="submit" class="bg-blue-600 text-white p-2 rounded font-bold">Añadir al Plan</button>
+                    </form>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="border-b">
+                                <th class="text-left py-3">Pauta</th>
+                                <th class="text-left py-3">Actividad</th>
+                                <th class="text-left py-3">Responsable</th>
+                                <th class="text-left py-3">Plazo</th>
+                                <th class="text-left py-3">Prioridad</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mejora-table-body"></tbody>
+                    </table>
                 </div>
             </section>
 
