@@ -105,11 +105,18 @@ async function loadPautas() {
 }
 
 // Modal Logic
-function openEvalModal(id, nombre, conformidad, argumentacion) {
+async function openEvalModal(id, nombre, conformidad, argumentacion) {
     document.getElementById('eval-pauta-id').value = id;
     document.getElementById('modal-title').innerText = `Evaluar: ${nombre}`;
     document.getElementById('eval-conformidad').value = conformidad || 100;
     document.getElementById('eval-argumentacion').value = argumentacion || '';
+
+    // Cargar Guía Inteligente
+    const res = await fetch(`${API_URL}/pautas/${id}`);
+    const data = await res.json();
+    const subContainer = document.getElementById('guia-subprocesos');
+    subContainer.innerHTML = data.subprocesos.map(s => `<li>${s.descripcion}</li>`).join('');
+
     document.getElementById('eval-modal').classList.remove('hidden');
 }
 

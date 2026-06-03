@@ -83,12 +83,14 @@ app.get('/api/pautas/:id', async (req, res) => {
         const fuentes = await query("SELECT * FROM fuentes WHERE pauta_id = ?", [req.params.id]);
         const evidencias = await query("SELECT * FROM evidencias WHERE pauta_id = ?", [req.params.id]);
         const evaluacion = await query("SELECT * FROM evaluaciones WHERE pauta_id = ?", [req.params.id]);
+        const subprocesos = await query("SELECT * FROM subprocesos WHERE pauta_id = ? ORDER BY orden", [req.params.id]);
 
         res.json({
             ...pauta[0],
             fuentes,
             evidencias,
-            evaluacion: evaluacion[0] || null
+            evaluacion: evaluacion[0] || null,
+            subprocesos
         });
     } catch (err) {
         res.status(500).json({ error: err.message });

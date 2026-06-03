@@ -48,6 +48,15 @@ db.serialize(() => {
     }
     stmtFuente.finalize();
 
+    // Insertar Subprocesos (Guía Inteligente)
+    const stmtSub = db.prepare("INSERT INTO subprocesos (pauta_id, descripcion, orden) VALUES (?, ?, ?)");
+    for (let i = 1; i <= 59; i++) {
+        stmtSub.run(i, "Identificar normativa aplicable", 1);
+        stmtSub.run(i, "Recopilar evidencias descriptivas", 2);
+        stmtSub.run(i, "Validar con partes interesadas", 3);
+    }
+    stmtSub.finalize();
+
     console.log("Seeding completado con éxito.");
 });
 
