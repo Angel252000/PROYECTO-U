@@ -1,7 +1,19 @@
-backend/node_modules/
-frontend/node_modules/
 node_modules/
 uploads/
-backend/database/*.sqlite
-backend/database/*.db
 *.log
+
+# Entorno y secretos
+.env
+.env.local
+.env.*.local
+
+# macOS
+.DS_Store
+
+# Supabase CLI (archivos temporales locales)
+supabase/.branches/
+supabase/.temp/
+
+# Python (entorno de importación de datos)
+.venv-import/
+__pycache__/
